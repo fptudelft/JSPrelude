@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JS Prelude</title>
+	<script type="text/javascript" src="infinite.browser.js"></script>
+	<script type="text/javascript" src="operators.browser.js"></script>
+	<script type="text/javascript" src="prelude.browser.js"></script>
+	
+	<style>
+		html{font-family: sans-serif; ;}
+		html, body{height: 100%; margin: 0; background: #00A6D6;}
+		#container{margin-left:200px; background: white; box-shadow: 0 0 5px black; padding: 3em; }
+		blockquote{font-style: italic; font-family: monospace;}
+	</style>
+</head>
+<body><div id="container">
+	<h1>Welcome to Prelude!</h1>
+	<p>This is just an example page of how you would include prelude into your html page.
+	For examples see the tests.js file.</p>
+	<p>You can execute the following examples in your JavaScript console. Currently only 
+	Chrome and Node.js have been tested!</p>
+	
+	<h2>Examples</h2>
+	<p>Let's compute the sum of a list using a fold</p>
+	<code>Prelude.foldl1(add)([0,1,2,3,4,5,6,7,8,9]); </code>
+	<blockquote>45</blockquote>
+	
+	<p>But why not use <em>sum</em> instead?</p>
+	<code>Prelude.sum([0,1,2,3,4,5,6,7,8,9]); </code>
+	<blockquote>45</blockquote>
+	
+	<p>Lets create an infinite list of numbers and get the first 10</p>
+	<code>Prelude.take(10)(new InfiniteLists.Iterate(Operators.op_sum(1),0))</code>
+	<blockquote>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</blockquote>
+	
+	<p>Summing over the first 100 of these is easy as well!</p>
+	<code>Prelude.sum(Prelude.take(100)(new InfiniteLists.Iterate(Operators.op_sum(1),0)))</code>
+	<blockquote>4950</blockquote>
+	
+	
+	</div>
+	
+</body>
+</html>
