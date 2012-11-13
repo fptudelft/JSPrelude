@@ -106,7 +106,7 @@ var Operators = new (function() {
 	/**
 	 * And operation. It takes two booleans x and y and returns the boolean x && y.
 	 */
-	this.op_and = function (x){
+	this.and = function (x){
 		return function(y){
 		if (typeof x !== 'boolean' || typeof y !== 'boolean')
 			throw new NotBooleanException("The list must contain booleans.");
@@ -116,7 +116,7 @@ var Operators = new (function() {
 	/**
 	 * Or operation. It takes two booleans x and y and returns the boolean x || y.
 	 */
-	this.op_or = function (x){
+	this.or = function (x){
 		return function(y){
 		if (typeof x !== 'boolean' || typeof y !== 'boolean')
 			throw new NotBooleanException("The list must contain booleans.");
@@ -127,7 +127,7 @@ var Operators = new (function() {
 	/**
 	 * Sum operation. It takes two numbers x and y. Returns x + y;
 	 */	
-	this.op_sum = function(x){
+	this.add = function(x){
 		return function(y){
 			return x+y;
 		}
@@ -136,7 +136,7 @@ var Operators = new (function() {
 	/**
 	 * Multiply operation. It takes two numbers x and y. Returns x * y;
 	 */	
-	this.op_product = function(x){
+	this.multiply = function(x){
 		return function(y){
 			return x*y;
 		}
@@ -145,19 +145,28 @@ var Operators = new (function() {
 	/**
 	 * Max operation. It takes two numbers x and y. Returns max(x,y).
 	 */
-	 this.op_max = function(x){
+	 this.max = function(x){
 	 	return function(y){
 	 		return Math.max(x,y);
 	 	}
 	 };
 	 
 	 /**
-	 * Min operation. It takes two numbers x and y. Returns min(x,y).
-	 */
-	 this.op_min = function(x){
+	  * Min operation. It takes two numbers x and y. Returns min(x,y).
+	  */
+	 this.min = function(x){
 	 	return function(y){
 	 		return Math.min(x,y);
 	 	}
+	 };
+
+	 /**
+	  * Not operation. It takes an element p and returns !p.
+	  */
+  	 var not = function(p){
+		return function(x){
+			return !p(x);
+		}
 	 };
 	
 })();
