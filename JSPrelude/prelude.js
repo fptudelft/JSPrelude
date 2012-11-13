@@ -5,7 +5,7 @@
  */
 var InfiniteLists = require("./infinite.js");
 
-var $ops = require("./operators.js");
+var Operators = require("./operators.js");
 
 var ListNotFiniteException = function(){};
 
@@ -296,7 +296,7 @@ var Prelude = new (function(undefined){
 	this.and = function(xs){
 		// For finite list nice functional approach
 		if($prelude.length(xs) != Infinity){			
-			return $prelude.foldl($ops.op_and)(true)(xs);
+			return $prelude.foldl(Operators.and)(true)(xs);
 		}
 		
 		var val = $prelude.head(xs);
@@ -320,7 +320,7 @@ var Prelude = new (function(undefined){
 	this.or = function(xs){
 		// For finite list nice functional approach
 		if($prelude.length(xs) != Infinity){
-			return $prelude.foldl($ops.op_or)(false)(xs);
+			return $prelude.foldl(Operators.or)(false)(xs);
 		}
 		
 		var val = $prelude.head(xs);
@@ -358,7 +358,7 @@ var Prelude = new (function(undefined){
 		if($prelude.length(xs) == Infinity)
 			throw new ListNotFiniteException();
 		
-		return $prelude.foldl($ops.op_sum)(0)(xs);
+		return $prelude.foldl(Operators.add)(0)(xs);
 	}
 	
 	// product :: Num a => [a] -> a
@@ -366,7 +366,7 @@ var Prelude = new (function(undefined){
 		if($prelude.length(xs) == Infinity)
 			throw new ListNotFiniteException();
 		
-		return $prelude.foldl($ops.op_product)(1)(xs);
+		return $prelude.foldl(Operators.multiply)(1)(xs);
 	}
 	
 	// concat :: [[a]] -> [a]
@@ -407,7 +407,7 @@ var Prelude = new (function(undefined){
 		if($prelude.null(xs))
 			throw new EmptyListException("List cannot be empty!");
 		
-		return $prelude.foldl1($ops.op_max)(xs);
+		return $prelude.foldl1(Operators.max)(xs);
 	}
 	
 	// minimum :: Ord a => [a] -> a
@@ -417,7 +417,7 @@ var Prelude = new (function(undefined){
 		if($prelude.null(xs))
 			throw new EmptyListException("List cannot be empty!");
 		
-		return $prelude.foldl1($ops.op_min)(xs);
+		return $prelude.foldl1(Operators.min)(xs);
 	}
 	
 	
@@ -622,7 +622,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.elem = function(element){
 		return function(list){
-			return $prelude.any($ops.eq(element))(list);
+			return $prelude.any(Operators.eq(element))(list);
 		}
 	}
 	
