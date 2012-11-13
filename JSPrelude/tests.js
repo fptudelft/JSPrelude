@@ -14,7 +14,7 @@ var assert = require("assert");
 
 
 /*
- * Operator functions
+ * Operator functions testcases
  */
 
 // Less than
