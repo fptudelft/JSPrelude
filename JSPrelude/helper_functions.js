@@ -152,12 +152,21 @@ var ops = new (function() {
 	 };
 	 
 	 /**
-	 * Min operation. It takes two numbers x and y. Returns min(x,y).
-	 */
+	  * Min operation. It takes two numbers x and y. Returns min(x,y).
+	  */
 	 this.op_min = function(x){
 	 	return function(y){
 	 		return Math.min(x,y);
 	 	}
+	 };
+
+	 /**
+	  * Not operation. It takes an element p and returns !p.
+	  */
+  	 var not = function(p){
+		return function(x){
+			return !p(x);
+		}
 	 };
 	
 })();
