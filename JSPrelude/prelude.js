@@ -7,7 +7,24 @@ var InfiniteLists = require("./infinite.js");
 
 var Operators = require("./operators.js");
 
+/*
+ * Exceptions: ListNotFiniteException, EmptyListException, ReturnNotBooleanException
+ */ 
+ 
+/**
+ * Thrown if the list is infinite.
+ */
 var ListNotFiniteException = function(){};
+
+/**
+ * Thrown if the list is empty.
+ */
+var EmptyListException = function(){};
+
+/**
+ * Thrown if the function does not return a boolean.
+ */
+var ReturnNotBooleanException = function(){};
 
 var Prelude = new (function(undefined){
 	var $prelude = this;
@@ -72,7 +89,7 @@ var Prelude = new (function(undefined){
 			
 			var head = $prelude.head(list);
 			if (typeof f(head) !== 'boolean')
-				throw new ReturnException("The function does not return a boolean!");
+				throw new ReturnNotBooleanException("The function does not return a boolean!");
 			else if(f(head))
 				return $prelude.append([head])($prelude.filter(f)($prelude.tail(list)))
 			else return $prelude.filter(f)($prelude.tail(list));
