@@ -1,7 +1,7 @@
 /**
  * The functions in this file are javascript implementations of the haskell list prelude found in the link below:
  * http://www.haskell.org/ghc/docs/6.12.2/html/libraries/base-4.2.0.1/Prelude.html#11
- * Each functions matches the original workings of the haskell functions as close as possible. 
+ * Each function matches the original workings of the haskell functions as close as possible. 
  */
 var InfiniteLists = require("./infinite.js");
 
@@ -23,12 +23,13 @@ var Prelude = new (function(undefined){
 	 * 
 	 * map takes a function f, which returns a function that takes a list. This latter function will use the function f on each of the elements in the list.
 	 * If the list is empty, an empty list will be returned. 
+	 * If an infinite list is applied, we return a MappedList.
 	 */ 
 	this.map = function(f){
 		return function(list){
 			if($prelude.null(list))
 				return [];
-			else if($prelude.length(list) == Infinity){
+			else if(list instanceof InfiniteLists.LazyList){
 				return new InfiniteLists.MappedList(f, list);	
 			} else {
 				return $prelude.append([f($prelude.head(list))]) ($prelude.map(f)($prelude.tail(list)));
@@ -40,14 +41,15 @@ var Prelude = new (function(undefined){
 	 * Haskell type description:
 	 * (++) :: [a] -> [a] -> [a]
 	 * 
-	 * append will take a list, list1, and return a function that takes another list, list2. The latter function returns the concatenation of list2 to list1.
+	 * Append will take a list, list1, and return a function that takes another list, list2. The latter function returns the concatenation of list2 to list1.
+	 * If the list1 is infinite, it returns lists1. If else list2 is infinite a ConcatenatedList of list1 and list2 is returned.
 	 */ 
 	this.append = function(list1){
 		return function(list2){
 			
-			if($prelude.length(list1) == Infinity)
+			if(list1 instanceof InfiniteLists.LazyList)
 				return list1;
-			else if($prelude.length(list2) == Infinity)
+			else if(list2 instanceof InfiniteLists.LazyList)
 				return new InfiniteLists.ConcatenatedList(list1, list2);
 			else return list1.concat(list2);
 		}
@@ -57,14 +59,15 @@ var Prelude = new (function(undefined){
 	 * Haskell type description:
 	 * filter :: (a -> Bool) -> [a] -> [a]
 	 * 
-	 * filter will take a function f, that returns a boolean, and return a function that takes a list. The latter function will return a list of the elements
+	 * Filter will take a function f, that returns a boolean, and return a function that takes a list. The latter function will return a list of the elements
 	 * that f returns true on. If f does not return a boolean on an element, it will throw an exception.
+	 * If the list is infinite a FilteredList is returned.
 	 */ 
 	this.filter = function(f){
 		return function(list){			
 			if($prelude.null(list))
 				return [];
-			else if($prelude.length(list) == Infinity)
+			else if(list instanceof InfiniteLists.LazyList)
 				return new InfiniteLists.FilteredList(list,f);
 				
 			
@@ -117,7 +120,7 @@ var Prelude = new (function(undefined){
 		if ($prelude.null(list))
 			throw new EmptyListException("Cannot return elements of an empty list");
 		
-		if(list.tail && typeof list.tail == 'function')
+		if(list instanceof InfiniteLists.LazyList)
 			return list.tail();
 		else if(list.length > 1)
 			return list.slice(1);
@@ -131,7 +134,7 @@ var Prelude = new (function(undefined){
 	 * Returns all elements of the list except for the last. Throws an exception if the list is empty.
 	 */ 
 	this.init = function(list){
-		if($prelude.length(list) == Infinity)
+		if(list instanceof InfiniteLists.LazyList)
 			return list;
 		
 		if ($prelude.null(list))
@@ -163,7 +166,7 @@ var Prelude = new (function(undefined){
 	 * Haskell type description:
 	 * (!!) :: [a] -> Int -> a
 	 * 
-	 * Returns a function that takes an integer. This function will return i+1th element of the list.
+	 * Returns a function that takes an integer, i. This function will return i+1th element of the list.
 	 */
 	this.get = function(list){
 		return function(i){
@@ -196,7 +199,10 @@ var Prelude = new (function(undefined){
 	 * Haskell type description:
 	 * foldl :: (a -> b -> a) -> a -> [b] -> a
 	 * 
-	 * 
+	 * Foldl takes a binary operator, which returns a function that takes an initial value, which returns a function that takes a list.
+	 * The last function will return a single value, which is a result of performing the operator on the leftmost two values in the list,
+	 * starting with the initial value, and thus reducing the lenght of the list by one, each iteration.
+	 * If the list is empty, the initial value will be returned.
 	 */
 	this.foldl = function(op){
 		return function(val){
@@ -212,7 +218,36 @@ var Prelude = new (function(undefined){
 		}
 	};
 	
-	// foldr :: (a -> b -> b) -> b -> [a] -> b
+	/**
+	 * Haskell type description:
+	 * foldl1 :: (a -> a -> a) -> [a] -> a
+	 *
+	 * Foldl1 takes a binary operator, which returns a function that takes a list.
+	 * The latter function will return a single value, which is a result of performing the operator on the leftmost two values in the list,
+	 * and thus reducing the lenght of the list by one, each iteration.
+	 * If the list is empty, an exception will be thrown.
+	 */
+	this.foldl1 = function(op){
+		return function(xs){
+			if($prelude.length(xs) == 0)
+				throw new EmptyListException("Cannot fold an empty list");
+				
+			var head = $prelude.head(xs);
+			var tail = $prelude.tail(xs);				
+				
+			return $prelude.foldl(op)(head)(tail);
+		}
+	}
+	
+	/**
+	 * Haskell type description:
+	 * foldr :: (a -> b -> b) -> b -> [a] -> b
+	 * 
+	 * Foldr takes a binary operator, which returns a function that takes an initial value, which returns a function that takes a list.
+	 * The last function will return a single value, which is a result of performing the operator on the rightmost two values in the list,
+	 * starting with the initial value, and thus reducing the lenght of the list by one, each iteration.
+	 * If the list is empty, the initial value will be returned.
+	 */
 	this.foldr = function(op){
 		return function(val){
 			return function(xs){
@@ -227,20 +262,16 @@ var Prelude = new (function(undefined){
 		}
 	}
 	
-	// foldl1 :: (a -> a -> a) -> [a] -> a
-	this.foldl1 = function(op){
-		return function(xs){
-			if($prelude.length(xs) == 0)
-				throw new EmptyListException("Cannot fold an empty list");
-				
-			var head = $prelude.head(xs);
-			var tail = $prelude.tail(xs);				
-				
-			return $prelude.foldl(op)(head)(tail);
-		}
-	}
-	
-	// foldr1 :: (a -> a -> a) -> [a] -> a
+
+	/**
+	 * Haskell type description:
+	 * foldr1 :: (a -> a -> a) -> [a] -> a
+	 *
+	 * Foldr1 takes a binary operator, which returns a function that takes a list.
+	 * The latter function will return a single value, which is a result of performing the operator on the rightmost two values in the list,
+	 * and thus reducing the lenght of the list by one, each iteration.
+	 * If the list is empty, an exception will be thrown.
+	 */
 	this.foldr1 = function(op){
 		return function(xs){
 			if($prelude.length(xs) == 0)
@@ -255,7 +286,13 @@ var Prelude = new (function(undefined){
 	 * Special folds: and, or, any, all, sum, product, concatMap, concat, maximum, minimum
 	 */
 	
-	// and :: [Bool] -> Bool
+	/**
+	 * Haskell type description:
+	 * and :: [Bool] -> Bool
+	 * 
+	 * And takes a list of booleans and returns a single boolean, by calling the foldl function with the binary and operation,
+	 * xs[i] && xs[i+1], and the initial value true.
+	 */
 	this.and = function(xs){
 		// For finite list nice functional approach
 		if($prelude.length(xs) != Infinity){			
@@ -273,7 +310,13 @@ var Prelude = new (function(undefined){
 		return val;
 	}
 	
-	// or :: [Bool] -> Bool
+	/**
+	 * Haskell type description:
+	 * or :: [Bool] -> Bool
+	 * 
+	 * Or takes a list of booleans and returns a single boolean, by calling the foldl function with the binary and operation,
+	 * xs[i] || xs[i+1], and the initial value false.
+	 */
 	this.or = function(xs){
 		// For finite list nice functional approach
 		if($prelude.length(xs) != Infinity){
@@ -291,7 +334,12 @@ var Prelude = new (function(undefined){
 		return val;
 	}
 	
-	// any :: (a -> Bool) -> [a] -> Bool
+	/**
+	 * Haskell type description:
+	 * any :: (a -> Bool) -> [a] -> Bool
+	 * 
+	 * Any takes 
+	 */
 	this.any = function(predicate){		
 		return function(xs){
 			return $prelude.or($prelude.map(predicate)(xs));
