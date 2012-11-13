@@ -5,15 +5,16 @@
 
 var InfiniteLists = require("./infinite.js");
 
-// The helper functions
+// The operators
 var Operators = require("./operators.js");
 //The Prelude
 var Prelude = require("./prelude.js");
 // Assert
 var assert = require("assert");
 
+
 /*
- * Helper functions test cases
+ * Operator functions
  */
 
 // Less than
@@ -25,11 +26,6 @@ assert.equal(Operators.lt(5)(5),false);
 assert.equal(Operators.gt(5)(6),true);
 assert.equal(Operators.gt(5)(4),false);
 assert.equal(Operators.gt(5)(5),false);
-
-// Multiply by 2
-assert.equal(Operators.multiply(2)(3),6);
-assert.equal(Operators.multiply(2)(0),0);
-assert.equal(Operators.multiply(2)(-3),-6);
 
 // Is even number
 assert.equal(Operators.isEven(5), false);
@@ -67,10 +63,6 @@ assert.equal(Operators.divide(4)(2), 2);
 assert.equal(Operators.divide(0)(2), 0);
 assert.equal(Operators.divide(4)(-2), -2);
 assert.equal(Operators.divide(-4)(-0.5), 8);
-
-/*
- * Operator functions
- */
 
 // Eq
 assert.equal(Operators.eq(true)(true), true);
@@ -120,6 +112,9 @@ assert.equal(Operators.min(0)(1), 0);
 assert.equal(Operators.min(-1)(1), -1);
 assert.equal(Operators.min(-3)(5), -3);
 
+// Not
+assert.equal(Operators.not(true), false);
+assert.equal(Operators.not(false), true);
 
 /*
  * The prelude test cases
