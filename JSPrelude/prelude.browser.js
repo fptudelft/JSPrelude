@@ -10,9 +10,6 @@ var Prelude = new (function(undefined){
 	var $prelude = this;
 	
 	
-	var $prelude = this;
-	
-	
 	/*
 	 * List Operations: map, (++) ~ append, filter, head, last, tail, init, null, length, (!!) ~ get, reverse
 	 */
