@@ -560,6 +560,29 @@ var Prelude = new (function(undefined){
 		}
 	};
 	
+		
+	/*
+	 * Infinite lists: iterate, repeat, replicate, cycle 
+	 * These lists are implemented in a separate module, infinite.js.
+	 * The replicate function is not strictly an infinite list, since it takes a finite number and is thus documented here.
+	 */
+	 
+	/**
+	 * Haskell type description:
+	 * replicate :: Int -> a -> [a]
+	 * 
+	 * Replicate takes a number n, which returns a function that takes an element.
+	 * Replicate will return a new array with n elements a.
+	 */
+	this.replicate = function(n){
+		return function(a){
+			var left = function(x){return function(y){return x;}};
+			var arr = new Array(n);
+			
+			return $prelude.map(left(a))(arr);
+		}
+	}
+	
 	/*
 	 * Sublists: take, drop, 
 	 */ 
@@ -792,6 +815,11 @@ var Prelude = new (function(undefined){
 	/**
 	 * Haskell type description:
 	 * zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+	 *
+	 * Zip3 takes a list l1, which returns a function that takes a list l2, which returns a function that takes a list l3.
+	 * Zip3 will return a list of lists of length 3, where each sublist has one element from l1, from l2 and from l3
+	 * at the corresponding positions.
+	 * If one of the lists is longer than one of the others, the excess will be discarded. 
 	 */
 	this.zip3 = function(list1){
 		return function(list2){
@@ -806,6 +834,12 @@ var Prelude = new (function(undefined){
 	/**
 	 * Haskell type description:
 	 * zipWith :: (a -> b -> c) -> [a] -> [b] -> [c] 
+	 *
+	 * ZipWith will take a function f, which returns a function that takes a list l1, which returns a function that takes a list l2.
+	 * The function f is applied upon two elements, returning a single element. 
+	 * ZipWith will use f on an element from l1 and l2 at corresponding positions, and return a single list of results.
+	 * If one list is longer than the other, excess elements will be discarded.
+	 * If the list is infinite, a ZippedList will be returned.
 	 */
 	this.zipWith = function(f){ 
 		return function(list1){
@@ -834,6 +868,12 @@ var Prelude = new (function(undefined){
 	/**
 	 * Haskell type description:
 	 * zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+	 *
+	 * ZipWith3 will take a function f, which returns a function that takes a list l1, which returns a function that takes a list l2, which returns a function that takes a list l3.
+	 * The function f is applied upon three elements, returning a single element. 
+	 * ZipWith3 will use f on an element from l1, l2 and l3 at corresponding positions, and return a single list of results.
+	 * If one list is longer than one of the others, excess elements will be discarded.
+	 * If the list is infinite, a ZippedList will be returned.
 	 */
 	this.zipWith3 = function(f){ 
 		return function(list1){
@@ -866,6 +906,10 @@ var Prelude = new (function(undefined){
 	/**
 	 * Haskell type description:
 	 * unzip :: [(a, b)] -> ([a], [b]) 
+	 * 
+	 * Unzip takes a list of lists of length 2. Unzip returns a list of two lists, where the first list has the first element of each sublist, 
+	 * and the second list has the second element of each sublist.
+	 * If the initial list is infinite, a MappedList will be returned.
 	 */
 	this.unzip = function(list){
 		if(list instanceof InfiniteLists.LazyList){
@@ -894,12 +938,16 @@ var Prelude = new (function(undefined){
 		return [
 			$prelude.concat([[h1], recursive[0]])
 			, $prelude.concat([[h2], recursive[1]])
-		];// ([h11, h12, h13], [h21, h22, h33]) 
+		];
 	}
 	
 	/**
 	 * Haskell type description:
 	 * unzip3 :: [(a, b, c)] -> ([a], [b], [c]) 
+	 * 
+	 * Unzip takes a list of lists of length 3. Unzip returns a list of three lists, where the first list has the first element of each sublist, 
+	 * the second list has the second element of each sublist, and the third list the third element of each sublist.
+	 * If the initial list is infinite, a MappedList will be returned.
 	 */
 	this.unzip3 = function(list){
 		if(list instanceof InfiniteLists.LazyList){
@@ -941,6 +989,8 @@ var Prelude = new (function(undefined){
 	/**
 	 * Haskell type description:
 	 * lines :: String -> [String]
+	 * 
+	 * Lines takes a string and returns a list of strings broken up at newline characters (\n).
 	 */ 
 	this.lines = function(string){
 		var f = function(s){
@@ -958,6 +1008,8 @@ var Prelude = new (function(undefined){
 	/**
 	 * Haskell type description:
 	 * words :: String -> [String]
+	 * 
+	 * Words takes a string and returns a list of strings broken up at spaces.
 	 */ 
 	this.words = function(string){
 		var f = function(s){
@@ -975,6 +1027,9 @@ var Prelude = new (function(undefined){
 	/**
 	 * Haskell type description:
 	 * unlines :: [String] -> String
+	 * 
+	 * Unlines takes a list of strings and returns a single string, where the strings in the list are concatenated
+	 * with a newline character (\n) in between.
 	 */
 	this.unlines = function(list){
 		var f = function(l){
@@ -988,19 +1043,12 @@ var Prelude = new (function(undefined){
 		return (f(list)("")).substring(1);
 	}
 	
-	this.replicate = function(n){
-		return function(a){
-			var left = function(x){return function(y){return x;}};
-			var arr = new Array(n);
-			
-			return $prelude.map(left(a))(arr);
-		}
-	}
-	
-	
 	/**
 	 * Haskell type description:
 	 * unwords :: [String] -> String
+	 * 
+	 * Unwords takes a list of strings and returns a single string, where the strings in the list are concatenated
+	 * with a space in between.
 	 */
 	this.unwords = function(list){
 		var f = function(l){
