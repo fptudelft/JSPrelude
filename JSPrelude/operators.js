@@ -2,8 +2,8 @@
  * This file consists of helper functions to use in the tests for the prelude.
  */
 
+ 
 var ops = new (function() {
-	
 	/**
 	 * Negation function
 	 */
@@ -25,13 +25,6 @@ var ops = new (function() {
 		return function(y){
 			return y > x;
 		}
-	}
-
-	/**
-	 * Multiply by 2 function. It takes a number x and returns 2 * x. 
-	 */
-	this.multiply2 = function(x){
-		return 2*x;
 	}
 
 	/**
@@ -108,8 +101,9 @@ var ops = new (function() {
 	 */
 	this.and = function (x){
 		return function(y){
-		if (typeof x !== 'boolean' || typeof y !== 'boolean')
-			throw new NotBooleanException("The list must contain booleans.");
+			var prelude = new require("./prelude.js");
+			if (typeof x !== 'boolean' || typeof y !== 'boolean')
+				throw new prelude.ReturnNotBooleanException("The list must contain booleans.");
 		return x && y;}
 	}
 	
@@ -118,8 +112,9 @@ var ops = new (function() {
 	 */
 	this.or = function (x){
 		return function(y){
-		if (typeof x !== 'boolean' || typeof y !== 'boolean')
-			throw new NotBooleanException("The list must contain booleans.");
+			var prelude = new require("./prelude.js");
+			if (typeof x !== 'boolean' || typeof y !== 'boolean')
+				throw new prelude.ReturnNotBooleanException("The list must contain booleans.");
 		return x || y;}
 	}
 	

@@ -3,7 +3,6 @@
  */
 
 var Operators = new (function() {
-	
 	/**
 	 * Negation function
 	 */
@@ -25,13 +24,6 @@ var Operators = new (function() {
 		return function(y){
 			return y > x;
 		}
-	}
-
-	/**
-	 * Multiply by 2 function. It takes a number x and returns 2 * x. 
-	 */
-	this.multiply2 = function(x){
-		return 2*x;
 	}
 
 	/**
@@ -108,8 +100,8 @@ var Operators = new (function() {
 	 */
 	this.and = function (x){
 		return function(y){
-		if (typeof x !== 'boolean' || typeof y !== 'boolean')
-			throw new NotBooleanException("The list must contain booleans.");
+			if (typeof x !== 'boolean' || typeof y !== 'boolean')
+				throw new Prelude.ReturnNotBooleanException("The list must contain booleans.");
 		return x && y;}
 	}
 	
@@ -118,8 +110,8 @@ var Operators = new (function() {
 	 */
 	this.or = function (x){
 		return function(y){
-		if (typeof x !== 'boolean' || typeof y !== 'boolean')
-			throw new NotBooleanException("The list must contain booleans.");
+			if (typeof x !== 'boolean' || typeof y !== 'boolean')
+				throw new Prelude.ReturnNotBooleanException("The list must contain booleans.");
 		return x || y;}
 	}
 	
@@ -163,12 +155,11 @@ var Operators = new (function() {
 	 /**
 	  * Not operation. It takes an element p and returns !p.
 	  */
-  	 var not = function(p){
+  	 this.not = function(p){
 		return function(x){
 			return !p(x);
 		}
 	 };
 	
+	
 })();
-
-var $ops = Operators;

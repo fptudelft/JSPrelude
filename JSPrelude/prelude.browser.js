@@ -1,34 +1,28 @@
 /**
  * The functions in this file are javascript implementations of the haskell list prelude found in the link below:
  * http://www.haskell.org/ghc/docs/6.12.2/html/libraries/base-4.2.0.1/Prelude.html#11
- * Each functions matches the original workings of the haskell functions as close as possible. 
+ * Each function matches the original workings of the haskell functions as close as possible. 
  */
- 
-/*
- * Exceptions: ListNotFiniteException, EmptyListException, ReturnNotBooleanException
- */ 
- 
-/**
- * Thrown if the list is infinite.
- */
-var ListNotFiniteException = function(){};
-
-/**
- * Thrown if the list is empty.
- */
-var EmptyListException = function(){};
-
-/**
- * Thrown if the function does not return a boolean.
- */
-var ReturnNotBooleanException = function(){};
-
-/*
- * Prelude
- */ 
-
 var Prelude = new (function(undefined){
 	var $prelude = this;
+
+	/*
+	 * Exceptions: ListNotFiniteException, EmptyListException, ReturnNotBooleanException
+	 */ 
+	/**
+	 * Thrown if the list is infinite.
+	 */
+	this.ListNotFiniteException = function(){};
+
+	/**
+	 * Thrown if the list is empty.
+	 */
+	this.EmptyListException = function(){};
+
+	/**
+	 * Thrown if the function does not return a boolean.
+	 */
+	this.ReturnNotBooleanException = function(){};
 	
 	
 	/*
@@ -90,7 +84,7 @@ var Prelude = new (function(undefined){
 			
 			var head = $prelude.head(list);
 			if (typeof f(head) !== 'boolean')
-				throw new ReturnException("The function does not return a boolean!");
+				throw new $prelude.ReturnNotBooleanException("The function does not return a boolean!");
 			else if(f(head))
 				return $prelude.append([head])($prelude.filter(f)($prelude.tail(list)))
 			else return $prelude.filter(f)($prelude.tail(list));
@@ -105,7 +99,7 @@ var Prelude = new (function(undefined){
 	 */ 
 	this.head = function(list){
 		if ($prelude.null(list))
-			throw new EmptyListException("Cannot return the first element of an empty list");
+			throw new $prelude.EmptyListException("Cannot return the first element of an empty list");
 		
 		if(list.head && typeof list.head == 'function')
 			return list.head();
@@ -120,10 +114,10 @@ var Prelude = new (function(undefined){
 	 */ 
 	this.last = function(list){
 		if($prelude.length(list) == Infinity)
-			throw new ListNotFiniteException("There is no such element in infinite lists!");
+			throw new $prelude.ListNotFiniteException("There is no such element in infinite lists!");
 		
 		if ($prelude.null(list))
-			throw new EmptyListException("Cannot return the last element of an empty list");
+			throw new $prelude.EmptyListException("Cannot return the last element of an empty list");
 		return list.slice(-1)[0];
 	};
 	
@@ -135,7 +129,7 @@ var Prelude = new (function(undefined){
 	 */ 
 	this.tail = function(list){
 		if ($prelude.null(list))
-			throw new EmptyListException("Cannot return elements of an empty list");
+			throw new $prelude.EmptyListException("Cannot return elements of an empty list");
 		
 		if(list instanceof InfiniteLists.LazyList)
 			return list.tail();
@@ -155,7 +149,7 @@ var Prelude = new (function(undefined){
 			return list;
 		
 		if ($prelude.null(list))
-			throw new EmptyListException("Cannot return elements of an empty list");
+			throw new $prelude.EmptyListException("Cannot return elements of an empty list");
 		return list.slice(0,-1);
 	};
 	
@@ -201,7 +195,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.reverse = function(list){
 		if($prelude.length(list) == Infinity)
-			throw new ListNotFiniteException();
+			throw new $prelude.ListNotFiniteException();
 		
 		return list.reverse();
 	}
@@ -247,7 +241,7 @@ var Prelude = new (function(undefined){
 	this.foldl1 = function(op){
 		return function(xs){
 			if($prelude.length(xs) == 0)
-				throw new EmptyListException("Cannot fold an empty list");
+				throw new $prelude.EmptyListException("Cannot fold an empty list");
 				
 			var head = $prelude.head(xs);
 			var tail = $prelude.tail(xs);				
@@ -292,7 +286,7 @@ var Prelude = new (function(undefined){
 	this.foldr1 = function(op){
 		return function(xs){
 			if($prelude.length(xs) == 0)
-				throw new EmptyListException("Cannot fold an empty list");
+				throw new $prelude.EmptyListException("Cannot fold an empty list");
 			
 			return $prelude.foldr(op)($prelude.last(xs))($prelude.init(xs));
 		}
@@ -388,7 +382,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.sum = function(xs){
 		if($prelude.length(xs) == Infinity)
-			throw new ListNotFiniteException();
+			throw new $prelude.ListNotFiniteException();
 		
 		return $prelude.foldl(Operators.add)(0)(xs);
 	}
@@ -401,7 +395,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.product = function(xs){
 		if($prelude.length(xs) == Infinity)
-			throw new ListNotFiniteException();
+			throw new $prelude.ListNotFiniteException();
 		
 		return $prelude.foldl(Operators.multiply)(1)(xs);
 	}
@@ -416,7 +410,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.concat = function(xss){
 		if($prelude.length(xss) == Infinity)
-			throw new ListNotFiniteException();
+			throw new $prelude.ListNotFiniteException();
 		
 		if($prelude.length(xss) > 0 && $prelude.get(xss)(0) instanceof InfiniteLists.LazyList)
 			return $prelude.get(xss)(0);
@@ -461,9 +455,9 @@ var Prelude = new (function(undefined){
 	 */
 	this.maximum = function(xs){
 		if($prelude.length(xs) == Infinity)
-			throw new ListNotFiniteException();
+			throw new $prelude.ListNotFiniteException();
 		if($prelude.null(xs))
-			throw new EmptyListException("List cannot be empty!");
+			throw new $prelude.EmptyListException("List cannot be empty!");
 		
 		return $prelude.foldl1(Operators.max)(xs);
 	}
@@ -478,9 +472,9 @@ var Prelude = new (function(undefined){
 	 */
 	this.minimum = function(xs){
 		if($prelude.length(xs) == Infinity)
-			throw new ListNotFiniteException();
+			throw new $prelude.ListNotFiniteException();
 		if($prelude.null(xs))
-			throw new EmptyListException("List cannot be empty!");
+			throw new $prelude.EmptyListException("List cannot be empty!");
 		
 		return $prelude.foldl1(Operators.min)(xs);
 	}
@@ -526,7 +520,7 @@ var Prelude = new (function(undefined){
 	this.scanl1 = function(op){
 		return function(list){
 			if($prelude.null(list))
-				throw new EmptyListException("List cannot be empty!");
+				throw new $prelude.EmptyListException("List cannot be empty!");
 			var head = $prelude.head(list);
 			var tail = $prelude.tail(list);
 			
@@ -570,7 +564,7 @@ var Prelude = new (function(undefined){
 	this.scanr1 = function(op){
 		return function(list){
 			if($prelude.null(list))
-				throw new EmptyListException("List cannot be empty!");
+				throw new $prelude.EmptyListException("List cannot be empty!");
 			var last = $prelude.last(list);
 			var prefix = $prelude.init(list);
 			

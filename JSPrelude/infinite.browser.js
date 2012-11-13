@@ -23,8 +23,8 @@ LazyList.prototype.get = function(pos){
 	var val = null;
 	
 	for(var i=0; i <= pos; i++){
-		val = prelude.head(list);
-		list = prelude.tail(list);
+		val = Prelude.head(list);
+		list = Prelude.tail(list);
 	}
 	
 	return val;
@@ -145,21 +145,21 @@ MappedList.prototype = Object.create(LazyList.prototype);
  * Gets the head of the wrapped list and applies f to it before returning it.
  */
 MappedList.prototype.head = function(){
-	return this.f(prelude.head(this.ls));
+	return this.f(Prelude.head(this.ls));
 }
 
 /**
  * Returns the tail by creating a new MappedList using the tail of the wrapped list and the mapping function f
  */
 MappedList.prototype.tail = function(){
-	return new MappedList(this.f, prelude.tail(this.ls));
+	return new MappedList(this.f, Prelude.tail(this.ls));
 }
 
 /**
  * Optimised get, just as optimal as the get function of the wrapped list
  */
 MappedList.prototype.get = function(pos){
-	return this.f(prelude.get(this.ls)(pos));
+	return this.f(Prelude.get(this.ls)(pos));
 }
 
 /**
@@ -177,11 +177,11 @@ FilteredList.prototype = Object.create(LazyList.prototype);
  * Gets the first element which complies with the filter. This function MAY NOT TERMINATE if there is no such element.
  */
 FilteredList.prototype.head = function(){
-	while(!this.f(prelude.head(this.ls))){
-		this.ls = prelude.tail(this.ls);
+	while(!this.f(Prelude.head(this.ls))){
+		this.ls = Prelude.tail(this.ls);
 	}
 	
-	return prelude.head(this.ls);
+	return Prelude.head(this.ls);
 }
 
 /**
@@ -190,7 +190,7 @@ FilteredList.prototype.head = function(){
  */
 FilteredList.prototype.tail = function(){
 	this.head();
-	return new FilteredList(prelude.tail(this.ls), this.f);
+	return new FilteredList(Prelude.tail(this.ls), this.f);
 }
 
 /**
@@ -209,20 +209,20 @@ var ConcatenatedList = function(as, bs){
 ConcatenatedList.prototype = Object.create(LazyList.prototype);
 
 ConcatenatedList.prototype.head = function(){
-	return prelude.head(this.as);
+	return Prelude.head(this.as);
 }
 
 ConcatenatedList.prototype.tail = function(){
 	if(this.as.length > 1)
-		return new ConcatenatedList(prelude.tail(this.as), this.bs);
+		return new ConcatenatedList(Prelude.tail(this.as), this.bs);
 	else if(this.as.length == 1)
 		return this.bs;
 }
 
 ConcatenatedList.prototype.get = function(pos){
 	if(pos < this.as.length)
-		return prelude.get(this.as)(pos);
-	else return prelude.get(this.bs)(pos - this.as.length + 1);
+		return Prelude.get(this.as)(pos);
+	else return Prelude.get(this.bs)(pos - this.as.length + 1);
 }
 
 /**
@@ -251,9 +251,9 @@ ZippedList.prototype.head = function(){
 	var result = [];
 	
 	if(this.lists.length == 2)
-		return this.f(prelude.head(this.lists[0]))(prelude.head(this.lists[1]));
+		return this.f(Prelude.head(this.lists[0]))(Prelude.head(this.lists[1]));
 	else if(this.lists.length == 3)
-		return this.f(prelude.head(this.lists[0]))(prelude.head(this.lists[1]))(prelude.head(this.lists[2]));
+		return this.f(Prelude.head(this.lists[0]))(Prelude.head(this.lists[1]))(Prelude.head(this.lists[2]));
 	else throw new Exception("Only 2 or 3 lists are supported at the time"); 
 }
 
@@ -264,9 +264,9 @@ ZippedList.prototype.tail = function(){
 	var args  = [this.f];
 	
 	if(this.lists.length == 2)
-		return new ZippedList(this.f, prelude.tail(this.lists[0]), prelude.tail(this.lists[1]));
+		return new ZippedList(this.f, Prelude.tail(this.lists[0]), Prelude.tail(this.lists[1]));
 	else if(this.lists.length == 3)
-		return new ZippedList(this.f, prelude.tail(this.lists[0]), prelude.tail(this.lists[1]), prelude.tail(this.lists[2]));
+		return new ZippedList(this.f, Prelude.tail(this.lists[0]), Prelude.tail(this.lists[1]), Prelude.tail(this.lists[2]));
 	else throw new Exception("Only 2 or 3 lists are supported at the time");
 }
 
@@ -288,17 +288,17 @@ TakeWhileList.prototype = Object.create(LazyList.prototype);
  * Note: should be called hasCurrent(), we will fix this in future release.
  */
 TakeWhileList.prototype.hasNext = function(){
-	return this.p(prelude.head(this.list));
+	return this.p(Prelude.head(this.list));
 }
 
 TakeWhileList.prototype.head = function(){
-	var head = prelude.head(this.list);
+	var head = Prelude.head(this.list);
 	
 	return this.p(head) ? head : null;
 }
 
 TakeWhileList.prototype.tail = function(){
-	return new TakeWhileList(this.p, prelude.tail(this.list));
+	return new TakeWhileList(this.p, Prelude.tail(this.list));
 }
 
 /**
@@ -317,11 +317,11 @@ DropWhileList.prototype = Object.create(LazyList.prototype);
  * Gets the first none dropped element of this list. This function MAY NOT TERMINATE if there is no such element.
  */
 DropWhileList.prototype.head = function(){
-	while(this.p(prelude.head(this.list))){
-		this.list = prelude.tail(this.list);
+	while(this.p(Prelude.head(this.list))){
+		this.list = Prelude.tail(this.list);
 	}
 	
-	return prelude.head(this.list);
+	return Prelude.head(this.list);
 }
 
 /**
@@ -330,7 +330,7 @@ DropWhileList.prototype.head = function(){
 DropWhileList.prototype.tail = function(){
 	this.head();
 
-	return prelude.tail(this.list);
+	return Prelude.tail(this.list);
 }
 /**
  * Each element in the wrapped list is fed to function f, this results in a finite number of results.
@@ -342,7 +342,7 @@ var ConcatMapList = function(f, list, results, cursor){
 	this.f = f;
 	this.list = list;
 	
-	this.results = results ? results : f(prelude.head(list));
+	this.results = results ? results : f(Prelude.head(list));
 	
 	// the position in the result set of f(current element in the wrapped list)
 	this.cursor = cursor ? cursor : 0;
@@ -361,8 +361,9 @@ ConcatMapList.prototype.tail = function(){
 		return new ConcatMapList(this.f, this.list, this.results, cursor);
 	
 	// We dont have results left, go to next result
-	else return new ConcatMapList(this.f, prelude.tail(this.list));
+	else return new ConcatMapList(this.f, Prelude.tail(this.list));
 }
+
 
 var InfiniteLists = {
 	Cycle: Cycle,

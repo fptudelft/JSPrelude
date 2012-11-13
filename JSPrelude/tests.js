@@ -152,31 +152,31 @@ assert.deepEqual(Prelude.filter(Operators.lt(5))([6]),[]);
 assert.deepEqual(Prelude.filter(Operators.lt(5))([3,12]),[3]);
 assert.deepEqual(Prelude.filter(Operators.lt(5))([10,12,6,3,8,4]),[3,4]);
 assert.deepEqual(Prelude.filter(Operators.isEven)([6,5]),[6]);
-assert.throws(function(){Prelude.filter(Operators.multiply(2))([6,5])}, Error);	// The function does not return a boolean
+assert.throws(function(){Prelude.filter(Operators.multiply(2))([6,5])}, Prelude.ReturnNotBooleanException);	// The function does not return a boolean
 
 // head
-assert.throws(function(){Prelude.head([])});							// Empty list
+assert.throws(function(){Prelude.head([])},Prelude.EmptyListException);							// Empty list
 assert.equal(Prelude.head([10]),10);	
 assert.deepEqual(Prelude.head([[10,5,4]]),[10,5,4]);
 assert.deepEqual(Prelude.head([Operators.divide(2)(1),Operators.subtract(4)(2)]),Operators.divide(2)(1));
 assert.equal(Prelude.head([10,11,12,13]),10);
 
 // last
-assert.throws(function(){Prelude.last([])});							// Empty list
+assert.throws(function(){Prelude.last([])},Prelude.EmptyListException);							// Empty list
 assert.equal(Prelude.last([10]),10);
 assert.equal(Prelude.last([10,5]),5);
 assert.deepEqual(Prelude.last([[10,5],[3,4]]),[3,4]);
 assert.equal(Prelude.last([true,false,true]),true);
 
 // tail
-assert.throws(function(){Prelude.tail([])});							// Empty list
+assert.throws(function(){Prelude.tail([])},Prelude.EmptyListException);							// Empty list
 assert.deepEqual(Prelude.tail([10]),[]);
 assert.deepEqual(Prelude.tail([[10,5,4]]),[]);
 assert.deepEqual(Prelude.tail([Operators.divide(2)(1),Operators.subtract(4)(2)]),[Operators.subtract(4)(2)]);
 assert.deepEqual(Prelude.tail([10,11,12,13]),[11,12,13]);
 
 // init
-assert.throws(function(){Prelude.init([])});							// Empty list
+assert.throws(function(){Prelude.init([])}),Prelude.EmptyListException;							// Empty list
 assert.deepEqual(Prelude.init([10]),[]);
 assert.deepEqual(Prelude.init([[10,5,4]]),[]);
 assert.deepEqual(Prelude.init([Operators.divide(2)(1),Operators.subtract(4)(2)]),[Operators.divide(2)(1)]);
@@ -232,14 +232,14 @@ assert.equal(Prelude.foldr(Operators.subtract)(0)([1,2,3,4]), -2);			// (1 -(2-(
 assert.equal(Prelude.foldr(Operators.subtract)(3)([1,2,3,4]), 1);
 
 // foldl1
-assert.throws(function(){Prelude.foldl1(Operators.add)([])});				// Empty list
+assert.throws(function(){Prelude.foldl1(Operators.add)([])},Prelude.EmptyListException);				// Empty list
 assert.equal(Prelude.foldl1(Operators.add)([3]), 3);
 assert.equal(Prelude.foldl1(Operators.add)([0,0,0,0]), 0);
 assert.equal(Prelude.foldl1(Operators.add)([1,2,3,4]), 10);
 assert.equal(Prelude.foldl1(Operators.subtract)([1,2,3,4]), -8);			// 1-2-3-4=-8
 
 // foldr1
-assert.throws(function(){Prelude.foldr1(Operators.add)([])});				// Empty list
+assert.throws(function(){Prelude.foldr1(Operators.add)([])},Prelude.EmptyListException);				// Empty list
 assert.equal(Prelude.foldr1(Operators.add)([3]), 3);
 assert.equal(Prelude.foldr1(Operators.add)([0,0,0,0]), 0);
 assert.equal(Prelude.foldr1(Operators.add)([1,2,3,4]), 10);
@@ -250,8 +250,8 @@ assert.equal(Prelude.foldr1(Operators.subtract)([1,2,3,4]), -2);			// 4-3-2-1=-2
  */
 
 // and
-assert.throws(function(){Prelude.and([0])});						// List contains other elements than booleans
-assert.throws(function(){Prelude.or([true, 5, 2])});				// List contains other elements than booleans
+assert.throws(function(){Prelude.and([0])},Prelude.ReturnNotBooleanException);						// List contains other elements than booleans
+assert.throws(function(){Prelude.or([true, 5, 2])},Prelude.ReturnNotBooleanException);				// List contains other elements than booleans
 assert.equal(Prelude.and([false]), false);
 assert.equal(Prelude.and([true]), true);
 assert.equal(Prelude.and([true, true]), true);
@@ -272,7 +272,7 @@ assert.equal(Prelude.or([false, false]), false);
 assert.equal(Prelude.or([false, false, true]), true);
 
 // any
-assert.throws(function(){Prelude.any(Operators.multiply(2))([2])}); 			// The function does not return a boolean
+assert.throws(function(){Prelude.any(Operators.multiply(2))([2])},Prelude.ReturnNotBooleanException); 			// The function does not return a boolean
 assert.equal(Prelude.any(Operators.lt(3))([]), false);
 assert.equal(Prelude.any(Operators.lt(3))([4]), false);
 assert.equal(Prelude.any(Operators.lt(3))([2,3,4]), true);
@@ -280,7 +280,7 @@ assert.equal(Prelude.any(Operators.lt(1))([2,3,4]), false);
 assert.equal(Prelude.any(Operators.gt(3))([2,3,4]), true);
 
 // all
-assert.throws(function(){Prelude.all(Operators.multiply(2))([2])}); 			// The function does not return a boolean
+assert.throws(function(){Prelude.all(Operators.multiply(2))([2])},Prelude.ReturnNotBooleanException); 			// The function does not return a boolean
 assert.equal(Prelude.all(Operators.lt(3))([]), true);
 assert.equal(Prelude.all(Operators.lt(3))([4]), false);
 assert.equal(Prelude.all(Operators.gt(3))([4]), true);
@@ -323,12 +323,12 @@ assert.deepEqual(Prelude.concatMap(Operators.expressionListArray)([[3, 2],[3, 4,
 assert.deepEqual(Prelude.concatMap(Operators.expressionArray)([3, 5, 7, 8]), [3, 1.5, 6, 5, 2.5, 10, 7, 3.5, 14, 8, 4, 16]);
 
 // maximum
-assert.throws(function(){Prelude.maximum([])});				// Empty list
+assert.throws(function(){Prelude.maximum([])},Prelude.EmptyListException);				// Empty list
 assert.equal(Prelude.maximum([16]),16);
 assert.equal(Prelude.maximum([10,15,16,13]),16);
 
 // minimum
-assert.throws(function(){Prelude.minimum([])});				// Empty list
+assert.throws(function(){Prelude.minimum([])},Prelude.EmptyListException);				// Empty list
 assert.equal(Prelude.minimum([10]),10);
 assert.deepEqual(Prelude.minimum([10,15,16,13]),10);
 
@@ -343,7 +343,7 @@ assert.deepEqual(Prelude.scanl(Operators.add)(1)([2,3,4]), [1,3,6,10]);
 assert.deepEqual(Prelude.scanl(Operators.and)(true)([true,true,false]), [true,true,true,false]);
 
 // scanl1
-assert.throws(function(){Prelude.scanl1(Operators.add)([])});				// Empty list
+assert.throws(function(){Prelude.scanl1(Operators.add)([])},Prelude.EmptyListException);				// Empty list
 assert.deepEqual(Prelude.scanl1(Operators.add)([1]), [1]);
 assert.deepEqual(Prelude.scanl1(Operators.add)([1, 2]), [1, 3]);
 assert.deepEqual(Prelude.scanl1(Operators.add)([1,2,3,4]), [1,3,6,10]);
@@ -355,7 +355,7 @@ assert.deepEqual(Prelude.scanr(Operators.divide)(2)([8,12,24,4]), [8,1,12,2,2]);
 assert.deepEqual(Prelude.scanr(Operators.and)(true)([false,true,true]), [false,true,true,true]);
 
 // scanr1
-assert.throws(function(){Prelude.scanr1(Operators.add)([])});				// Empty list
+assert.throws(function(){Prelude.scanr1(Operators.add)([])},Prelude.EmptyListException);				// Empty list
 assert.deepEqual(Prelude.scanr1(Operators.add)([1]), [1]);
 assert.deepEqual(Prelude.scanr1(Operators.add)([1, 2]), [3, 2]);
 assert.deepEqual(Prelude.scanr1(Operators.divide)([8,12,24,4,2]), [8,1,12,2,2]);
