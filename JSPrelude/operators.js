@@ -163,7 +163,7 @@ var ops = new (function() {
 	 /**
 	  * Not operation. It takes an element p and returns !p.
 	  */
-  	 var not = function(p){
+  	 this.not = function(p){
 		return function(x){
 			return !p(x);
 		}

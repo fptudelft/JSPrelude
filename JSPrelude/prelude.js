@@ -5,7 +5,7 @@
  */
 var InfiniteLists = require("./infinite.js");
 
-var $ops = require("./helper_functions.js");
+var Operators = require("./operators.js");
 
 var ListNotFiniteException = function(){};
 
@@ -46,7 +46,6 @@ var Prelude = new (function(undefined){
 	 */ 
 	this.append = function(list1){
 		return function(list2){
-			
 			if(list1 instanceof InfiniteLists.LazyList)
 				return list1;
 			else if(list2 instanceof InfiniteLists.LazyList)
@@ -296,7 +295,7 @@ var Prelude = new (function(undefined){
 	this.and = function(xs){
 		// For finite list nice functional approach
 		if($prelude.length(xs) != Infinity){			
-			return $prelude.foldl($ops.and)(true)(xs);
+			return $prelude.foldl(Operators.and)(true)(xs);
 		}
 		
 		var val = $prelude.head(xs);
@@ -320,7 +319,7 @@ var Prelude = new (function(undefined){
 	this.or = function(xs){
 		// For finite list nice functional approach
 		if($prelude.length(xs) != Infinity){
-			return $prelude.foldl($ops.or)(false)(xs);
+			return $prelude.foldl(Operators.or)(false)(xs);
 		}
 		
 		var val = $prelude.head(xs);
@@ -373,7 +372,7 @@ var Prelude = new (function(undefined){
 		if($prelude.length(xs) == Infinity)
 			throw new ListNotFiniteException();
 		
-		return $prelude.foldl($ops.add)(0)(xs);
+		return $prelude.foldl(Operators.add)(0)(xs);
 	}
 	
 	/**
@@ -386,7 +385,7 @@ var Prelude = new (function(undefined){
 		if($prelude.length(xs) == Infinity)
 			throw new ListNotFiniteException();
 		
-		return $prelude.foldl($ops.product)(1)(xs);
+		return $prelude.foldl(Operators.multiply)(1)(xs);
 	}
 	
 	/**
@@ -448,7 +447,7 @@ var Prelude = new (function(undefined){
 		if($prelude.null(xs))
 			throw new EmptyListException("List cannot be empty!");
 		
-		return $prelude.foldl1($ops.max)(xs);
+		return $prelude.foldl1(Operators.max)(xs);
 	}
 	
 	/**
@@ -465,7 +464,7 @@ var Prelude = new (function(undefined){
 		if($prelude.null(xs))
 			throw new EmptyListException("List cannot be empty!");
 		
-		return $prelude.foldl1($ops.min)(xs);
+		return $prelude.foldl1(Operators.min)(xs);
 	}
 	
 	
@@ -575,7 +574,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.take = function(num){
 		return function(list){
-			if(! list instanceof InfiniteLists.LazyList)
+			if(!(list instanceof InfiniteLists.LazyList))
 				return num > 0 ? list.slice(0,num) : [];
 			
 			var result = [];
@@ -603,8 +602,8 @@ var Prelude = new (function(undefined){
 	 */
 	this.drop = function(num){
 		return function(list){
-			if(! list instanceof InfiniteLists.LazyList)
-				return num > 0 ? list.slice(0,num) : [];
+			if(!(list instanceof InfiniteLists.LazyList))
+				return num >= 0 ? list.slice(num) : list;
 			
 			var result = list;
 			for(var i=0; i < num; i++){
@@ -712,7 +711,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.break = function(p){
 		return function(list){
-			return $prelude.span($ops.not(p))(list);
+			return $prelude.span(Operators.not(p))(list);
 		}
 	};
 	
@@ -729,7 +728,7 @@ var Prelude = new (function(undefined){
 	 */
 	this.elem = function(element){
 		return function(list){
-			return $prelude.any($ops.eq(element))(list);
+			return $prelude.any(Operators.eq(element))(list);
 		}
 	}
 	
