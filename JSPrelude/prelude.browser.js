@@ -3,8 +3,29 @@
  * http://www.haskell.org/ghc/docs/6.12.2/html/libraries/base-4.2.0.1/Prelude.html#11
  * Each functions matches the original workings of the haskell functions as close as possible. 
  */
-
+ 
+/*
+ * Exceptions: ListNotFiniteException, EmptyListException, ReturnNotBooleanException
+ */ 
+ 
+/**
+ * Thrown if the list is infinite.
+ */
 var ListNotFiniteException = function(){};
+
+/**
+ * Thrown if the list is empty.
+ */
+var EmptyListException = function(){};
+
+/**
+ * Thrown if the function does not return a boolean.
+ */
+var ReturnNotBooleanException = function(){};
+
+/*
+ * Prelude
+ */ 
 
 var Prelude = new (function(undefined){
 	var $prelude = this;
