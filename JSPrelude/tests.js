@@ -6,9 +6,9 @@
 var InfiniteLists = require("./infinite.js");
 
 // The helper functions
-var hf = require("../prelude/helper_functions.js");
+var Operators = require("./operators.js");
 //The Prelude
-var Prelude = require("../prelude/prelude.js");
+var Prelude = require("./prelude.js");
 // Assert
 var assert = require("assert");
 
@@ -17,108 +17,108 @@ var assert = require("assert");
  */
 
 // Less than
-assert.equal(hf.lt(5)(6),false);
-assert.equal(hf.lt(5)(4),true);
-assert.equal(hf.lt(5)(5),false);
+assert.equal(Operators.lt(5)(6),false);
+assert.equal(Operators.lt(5)(4),true);
+assert.equal(Operators.lt(5)(5),false);
 
 // Greater than
-assert.equal(hf.gt(5)(6),true);
-assert.equal(hf.gt(5)(4),false);
-assert.equal(hf.gt(5)(5),false);
+assert.equal(Operators.gt(5)(6),true);
+assert.equal(Operators.gt(5)(4),false);
+assert.equal(Operators.gt(5)(5),false);
 
 // Multiply by 2
-assert.equal(hf.multiply2(3),6);
-assert.equal(hf.multiply2(0),0);
-assert.equal(hf.multiply2(-3),-6);
+assert.equal(Operators.multiply(2)(3),6);
+assert.equal(Operators.multiply(2)(0),0);
+assert.equal(Operators.multiply(2)(-3),-6);
 
 // Is even number
-assert.equal(hf.isEven(5), false);
-assert.equal(hf.isEven(4), true);
-assert.equal(hf.isEven(0), true);
-assert.equal(hf.isEven(-3), false);
-assert.equal(hf.isEven(4.0), true);
-assert.equal(hf.isEven(4.0000001), false);
+assert.equal(Operators.isEven(5), false);
+assert.equal(Operators.isEven(4), true);
+assert.equal(Operators.isEven(0), true);
+assert.equal(Operators.isEven(-3), false);
+assert.equal(Operators.isEven(4.0), true);
+assert.equal(Operators.isEven(4.0000001), false);
 
 // Sum over three numbers
-assert.equal(hf.sum3(0)(0)(0), 0);
-assert.equal(hf.sum3(1)(0)(-1), 0);
-assert.equal(hf.sum3(1)(8)(-1), 8);
-assert.equal(hf.sum3(-1)(-6)(-1), -8);
+assert.equal(Operators.sum3(0)(0)(0), 0);
+assert.equal(Operators.sum3(1)(0)(-1), 0);
+assert.equal(Operators.sum3(1)(8)(-1), 8);
+assert.equal(Operators.sum3(-1)(-6)(-1), -8);
 
 // Subtract
-assert.equal(hf.subtract(1)(0), 1);
-assert.equal(hf.subtract(1)(-1), 2);
-assert.equal(hf.subtract(0)(0), 0);
-assert.equal(hf.subtract(-1)(4), -5);
+assert.equal(Operators.subtract(1)(0), 1);
+assert.equal(Operators.subtract(1)(-1), 2);
+assert.equal(Operators.subtract(0)(0), 0);
+assert.equal(Operators.subtract(-1)(4), -5);
 
 // Array of expressions with array input
-assert.equal(hf.expressionListArray([]), 0);
-assert.equal(hf.expressionListArray([1]), 1);
-assert.equal(hf.expressionListArray([1, 1, 1]), 3);
+assert.equal(Operators.expressionListArray([]), 0);
+assert.equal(Operators.expressionListArray([1]), 1);
+assert.equal(Operators.expressionListArray([1, 1, 1]), 3);
 
 // Array of expressions with element input
-assert.deepEqual(hf.expressionArray(1), [1, 1/2, 2]);
-assert.deepEqual(hf.expressionArray(0), [0, 0, 0]);
-assert.deepEqual(hf.expressionArray(-2), [-2, -1, -4]);
-assert.deepEqual(hf.expressionArray(-0.3), [-0.3, -0.15, -0.6]);
+assert.deepEqual(Operators.expressionArray(1), [1, 1/2, 2]);
+assert.deepEqual(Operators.expressionArray(0), [0, 0, 0]);
+assert.deepEqual(Operators.expressionArray(-2), [-2, -1, -4]);
+assert.deepEqual(Operators.expressionArray(-0.3), [-0.3, -0.15, -0.6]);
 
 // Division 
-assert.equal(hf.divide(4)(2), 2);
-assert.equal(hf.divide(0)(2), 0);
-assert.equal(hf.divide(4)(-2), -2);
-assert.equal(hf.divide(-4)(-0.5), 8);
+assert.equal(Operators.divide(4)(2), 2);
+assert.equal(Operators.divide(0)(2), 0);
+assert.equal(Operators.divide(4)(-2), -2);
+assert.equal(Operators.divide(-4)(-0.5), 8);
 
 /*
  * Operator functions
  */
 
 // Eq
-assert.equal(hf.eq(true)(true), true);
-assert.equal(hf.eq(true)(false), false);
-assert.equal(hf.eq(5)(5), true);
-assert.equal(hf.eq(5)(4), false);
-assert.equal(hf.eq(0)(null), false);
+assert.equal(Operators.eq(true)(true), true);
+assert.equal(Operators.eq(true)(false), false);
+assert.equal(Operators.eq(5)(5), true);
+assert.equal(Operators.eq(5)(4), false);
+assert.equal(Operators.eq(0)(null), false);
 
 // Neq
-assert.equal(hf.neq(true)(true), false);
-assert.equal(hf.neq(true)(false), true);
-assert.equal(hf.neq(5)(5), false);
-assert.equal(hf.neq(5)(4), true);
-assert.equal(hf.neq(0)(null), true);
+assert.equal(Operators.neq(true)(true), false);
+assert.equal(Operators.neq(true)(false), true);
+assert.equal(Operators.neq(5)(5), false);
+assert.equal(Operators.neq(5)(4), true);
+assert.equal(Operators.neq(0)(null), true);
  
 // Or
-assert.equal(hf.op_or(true)(true), true);
-assert.equal(hf.op_or(true)(false), true);
-assert.equal(hf.op_or(false)(false), false);
+assert.equal(Operators.or(true)(true), true);
+assert.equal(Operators.or(true)(false), true);
+assert.equal(Operators.or(false)(false), false);
 
 // And
-assert.equal(hf.op_and(true)(true), true);
-assert.equal(hf.op_and(true)(false), false);
-assert.equal(hf.op_and(false)(false), false);
+assert.equal(Operators.and(true)(true), true);
+assert.equal(Operators.and(true)(false), false);
+assert.equal(Operators.and(false)(false), false);
  
 // Sum
-assert.equal(hf.op_sum(0)(0), 0);
-assert.equal(hf.op_sum(0)(1), 1);
-assert.equal(hf.op_sum(-1)(0), -1);
-assert.equal(hf.op_sum(-3)(5), 2);
+assert.equal(Operators.add(0)(0), 0);
+assert.equal(Operators.add(0)(1), 1);
+assert.equal(Operators.add(-1)(0), -1);
+assert.equal(Operators.add(-3)(5), 2);
 
 // Product
-assert.equal(hf.op_product(0)(0), 0);
-assert.equal(hf.op_product(0)(1), 0);
-assert.equal(hf.op_product(-1)(1), -1);
-assert.equal(hf.op_product(-3)(5), -15);
+assert.equal(Operators.multiply(0)(0), 0);
+assert.equal(Operators.multiply(0)(1), 0);
+assert.equal(Operators.multiply(-1)(1), -1);
+assert.equal(Operators.multiply(-3)(5), -15);
 
 // Max
-assert.equal(hf.op_max(0)(0), 0);
-assert.equal(hf.op_max(0)(1), 1);
-assert.equal(hf.op_max(-1)(1), 1);
-assert.equal(hf.op_max(-3)(5), 5);
+assert.equal(Operators.max(0)(0), 0);
+assert.equal(Operators.max(0)(1), 1);
+assert.equal(Operators.max(-1)(1), 1);
+assert.equal(Operators.max(-3)(5), 5);
 
 // Min
-assert.equal(hf.op_min(0)(0), 0);
-assert.equal(hf.op_min(0)(1), 0);
-assert.equal(hf.op_min(-1)(1), -1);
-assert.equal(hf.op_min(-3)(5), -3);
+assert.equal(Operators.min(0)(0), 0);
+assert.equal(Operators.min(0)(1), 0);
+assert.equal(Operators.min(-1)(1), -1);
+assert.equal(Operators.min(-3)(5), -3);
 
 
 /*
@@ -130,10 +130,10 @@ assert.equal(hf.op_min(-3)(5), -3);
  */
 
 // Map
-assert.deepEqual(Prelude.map(hf.lt(5))([]), []);
-assert.deepEqual(Prelude.map(hf.lt(5))([4]), [true]);
-assert.deepEqual(Prelude.map(hf.lt(5))([0,5,7]), [true,false,false]);
-assert.deepEqual(Prelude.map(hf.multiply2)([10,11,12,13]),[20,22,24,26]);
+assert.deepEqual(Prelude.map(Operators.lt(5))([]), []);
+assert.deepEqual(Prelude.map(Operators.lt(5))([4]), [true]);
+assert.deepEqual(Prelude.map(Operators.lt(5))([0,5,7]), [true,false,false]);
+assert.deepEqual(Prelude.map(Operators.multiply(2))([10,11,12,13]),[20,22,24,26]);
 assert.deepEqual(Prelude.map(Prelude.take(2))([[1,2,3],[4,5,6],[7,8,9]]), [[1,2],[4,5],[7,8]]);
 assert.deepEqual(Prelude.map(Prelude.drop(1))([[1,2,3],[4,5,6],[7,8,9]]), [[2,3],[5,6],[8,9]]);
 
@@ -146,19 +146,19 @@ assert.deepEqual(Prelude.append([true])([false]), [true,false]);
 assert.deepEqual(Prelude.append([1,2])([1,2,3,4]), [1,2,1,2,3,4]);
 
 // Filter
-assert.deepEqual(Prelude.filter(hf.lt(5))([]),[]);
-assert.deepEqual(Prelude.filter(hf.lt(5))([4]),[4]);
-assert.deepEqual(Prelude.filter(hf.lt(5))([6]),[]);
-assert.deepEqual(Prelude.filter(hf.lt(5))([3,12]),[3]);
-assert.deepEqual(Prelude.filter(hf.lt(5))([10,12,6,3,8,4]),[3,4]);
-assert.deepEqual(Prelude.filter(hf.isEven)([6,5]),[6]);
-assert.throws(function(){Prelude.filter(hf.multiply2)([6,5])}, Error);	// The function does not return a boolean
+assert.deepEqual(Prelude.filter(Operators.lt(5))([]),[]);
+assert.deepEqual(Prelude.filter(Operators.lt(5))([4]),[4]);
+assert.deepEqual(Prelude.filter(Operators.lt(5))([6]),[]);
+assert.deepEqual(Prelude.filter(Operators.lt(5))([3,12]),[3]);
+assert.deepEqual(Prelude.filter(Operators.lt(5))([10,12,6,3,8,4]),[3,4]);
+assert.deepEqual(Prelude.filter(Operators.isEven)([6,5]),[6]);
+assert.throws(function(){Prelude.filter(Operators.multiply(2))([6,5])}, Error);	// The function does not return a boolean
 
 // head
 assert.throws(function(){Prelude.head([])});							// Empty list
 assert.equal(Prelude.head([10]),10);	
 assert.deepEqual(Prelude.head([[10,5,4]]),[10,5,4]);
-assert.deepEqual(Prelude.head([hf.divide(2)(1),hf.subtract(4)(2)]),hf.divide(2)(1));
+assert.deepEqual(Prelude.head([Operators.divide(2)(1),Operators.subtract(4)(2)]),Operators.divide(2)(1));
 assert.equal(Prelude.head([10,11,12,13]),10);
 
 // last
@@ -172,14 +172,14 @@ assert.equal(Prelude.last([true,false,true]),true);
 assert.throws(function(){Prelude.tail([])});							// Empty list
 assert.deepEqual(Prelude.tail([10]),[]);
 assert.deepEqual(Prelude.tail([[10,5,4]]),[]);
-assert.deepEqual(Prelude.tail([hf.divide(2)(1),hf.subtract(4)(2)]),[hf.subtract(4)(2)]);
+assert.deepEqual(Prelude.tail([Operators.divide(2)(1),Operators.subtract(4)(2)]),[Operators.subtract(4)(2)]);
 assert.deepEqual(Prelude.tail([10,11,12,13]),[11,12,13]);
 
 // init
 assert.throws(function(){Prelude.init([])});							// Empty list
 assert.deepEqual(Prelude.init([10]),[]);
 assert.deepEqual(Prelude.init([[10,5,4]]),[]);
-assert.deepEqual(Prelude.init([hf.divide(2)(1),hf.subtract(4)(2)]),[hf.divide(2)(1)]);
+assert.deepEqual(Prelude.init([Operators.divide(2)(1),Operators.subtract(4)(2)]),[Operators.divide(2)(1)]);
 assert.deepEqual(Prelude.init([10,11,12,13]),[10,11,12]);
 
 // null
@@ -215,35 +215,35 @@ assert.deepEqual(Prelude.reverse([5,4,3,2,1]),[1,2,3,4,5]);
  */
 
 // foldl
-assert.equal(Prelude.foldl(hf.op_sum)(0)([]), 0);
-assert.equal(Prelude.foldl(hf.op_sum)(5)([]), 5);
-assert.equal(Prelude.foldl(hf.op_sum)(5)([3]), 8);
-assert.equal(Prelude.foldl(hf.op_sum)(0)([0,0,0,0]), 0);
-assert.equal(Prelude.foldl(hf.op_sum)(0)([1,2,3,4]), 10);
-assert.equal(Prelude.foldl(hf.subtract)(3)([1,2,3,4]), -7);
+assert.equal(Prelude.foldl(Operators.add)(0)([]), 0);
+assert.equal(Prelude.foldl(Operators.add)(5)([]), 5);
+assert.equal(Prelude.foldl(Operators.add)(5)([3]), 8);
+assert.equal(Prelude.foldl(Operators.add)(0)([0,0,0,0]), 0);
+assert.equal(Prelude.foldl(Operators.add)(0)([1,2,3,4]), 10);
+assert.equal(Prelude.foldl(Operators.subtract)(3)([1,2,3,4]), -7);
 
 // foldr
-assert.equal(Prelude.foldr(hf.op_sum)(0)([]), 0);
-assert.equal(Prelude.foldr(hf.op_sum)(5)([]), 5);
-assert.equal(Prelude.foldr(hf.op_sum)(5)([3]), 8);
-assert.equal(Prelude.foldr(hf.op_sum)(0)([0,0,0,0]), 0);
-assert.equal(Prelude.foldr(hf.op_sum)(0)([1,2,3,4]), 10);
-assert.equal(Prelude.foldr(hf.subtract)(0)([1,2,3,4]), -2);			// (1 -(2-(3-(4-0)))) = 0-(1-(2-(-1))) = 1 - 3 = -2
-assert.equal(Prelude.foldr(hf.subtract)(3)([1,2,3,4]), 1);
+assert.equal(Prelude.foldr(Operators.add)(0)([]), 0);
+assert.equal(Prelude.foldr(Operators.add)(5)([]), 5);
+assert.equal(Prelude.foldr(Operators.add)(5)([3]), 8);
+assert.equal(Prelude.foldr(Operators.add)(0)([0,0,0,0]), 0);
+assert.equal(Prelude.foldr(Operators.add)(0)([1,2,3,4]), 10);
+assert.equal(Prelude.foldr(Operators.subtract)(0)([1,2,3,4]), -2);			// (1 -(2-(3-(4-0)))) = 0-(1-(2-(-1))) = 1 - 3 = -2
+assert.equal(Prelude.foldr(Operators.subtract)(3)([1,2,3,4]), 1);
 
 // foldl1
-assert.throws(function(){Prelude.foldl1(hf.op_sum)([])});				// Empty list
-assert.equal(Prelude.foldl1(hf.op_sum)([3]), 3);
-assert.equal(Prelude.foldl1(hf.op_sum)([0,0,0,0]), 0);
-assert.equal(Prelude.foldl1(hf.op_sum)([1,2,3,4]), 10);
-assert.equal(Prelude.foldl1(hf.subtract)([1,2,3,4]), -8);			// 1-2-3-4=-8
+assert.throws(function(){Prelude.foldl1(Operators.add)([])});				// Empty list
+assert.equal(Prelude.foldl1(Operators.add)([3]), 3);
+assert.equal(Prelude.foldl1(Operators.add)([0,0,0,0]), 0);
+assert.equal(Prelude.foldl1(Operators.add)([1,2,3,4]), 10);
+assert.equal(Prelude.foldl1(Operators.subtract)([1,2,3,4]), -8);			// 1-2-3-4=-8
 
 // foldr1
-assert.throws(function(){Prelude.foldr1(hf.op_sum)([])});				// Empty list
-assert.equal(Prelude.foldr1(hf.op_sum)([3]), 3);
-assert.equal(Prelude.foldr1(hf.op_sum)([0,0,0,0]), 0);
-assert.equal(Prelude.foldr1(hf.op_sum)([1,2,3,4]), 10);
-assert.equal(Prelude.foldr1(hf.subtract)([1,2,3,4]), -2);			// 4-3-2-1=-2
+assert.throws(function(){Prelude.foldr1(Operators.add)([])});				// Empty list
+assert.equal(Prelude.foldr1(Operators.add)([3]), 3);
+assert.equal(Prelude.foldr1(Operators.add)([0,0,0,0]), 0);
+assert.equal(Prelude.foldr1(Operators.add)([1,2,3,4]), 10);
+assert.equal(Prelude.foldr1(Operators.subtract)([1,2,3,4]), -2);			// 4-3-2-1=-2
 
 /*
  * Special folds: and, or, any, all, sum, product, concat, concatMap, maximum, minimum
@@ -272,22 +272,22 @@ assert.equal(Prelude.or([false, false]), false);
 assert.equal(Prelude.or([false, false, true]), true);
 
 // any
-assert.throws(function(){Prelude.any(hf.multiply2)([2])}); 			// The function does not return a boolean
-assert.equal(Prelude.any(hf.lt(3))([]), false);
-assert.equal(Prelude.any(hf.lt(3))([4]), false);
-assert.equal(Prelude.any(hf.lt(3))([2,3,4]), true);
-assert.equal(Prelude.any(hf.lt(1))([2,3,4]), false);
-assert.equal(Prelude.any(hf.gt(3))([2,3,4]), true);
+assert.throws(function(){Prelude.any(Operators.multiply(2))([2])}); 			// The function does not return a boolean
+assert.equal(Prelude.any(Operators.lt(3))([]), false);
+assert.equal(Prelude.any(Operators.lt(3))([4]), false);
+assert.equal(Prelude.any(Operators.lt(3))([2,3,4]), true);
+assert.equal(Prelude.any(Operators.lt(1))([2,3,4]), false);
+assert.equal(Prelude.any(Operators.gt(3))([2,3,4]), true);
 
 // all
-assert.throws(function(){Prelude.all(hf.multiply2)([2])}); 			// The function does not return a boolean
-assert.equal(Prelude.all(hf.lt(3))([]), true);
-assert.equal(Prelude.all(hf.lt(3))([4]), false);
-assert.equal(Prelude.all(hf.gt(3))([4]), true);
-assert.equal(Prelude.all(hf.lt(3))([2,3,4]), false);
-assert.equal(Prelude.all(hf.lt(1))([2,3,4]), false);
-assert.equal(Prelude.all(hf.gt(3))([2,3,4]), false);
-assert.equal(Prelude.all(hf.lt(5))([2,3,4]), true);
+assert.throws(function(){Prelude.all(Operators.multiply(2))([2])}); 			// The function does not return a boolean
+assert.equal(Prelude.all(Operators.lt(3))([]), true);
+assert.equal(Prelude.all(Operators.lt(3))([4]), false);
+assert.equal(Prelude.all(Operators.gt(3))([4]), true);
+assert.equal(Prelude.all(Operators.lt(3))([2,3,4]), false);
+assert.equal(Prelude.all(Operators.lt(1))([2,3,4]), false);
+assert.equal(Prelude.all(Operators.gt(3))([2,3,4]), false);
+assert.equal(Prelude.all(Operators.lt(5))([2,3,4]), true);
 
 // sum
 assert.equal(Prelude.sum([]), 0);
@@ -316,11 +316,11 @@ assert.deepEqual(Prelude.concat([[3], [], [1, 2], []]), [3, 1, 2]);
 assert.deepEqual(Prelude.concat([[1],[2,3,4],[5,6]]), [1,2,3,4,5,6]);
 
 // concatMap
-assert.deepEqual(Prelude.concatMap(hf.expressionArray)([]), []);
-assert.deepEqual(Prelude.concatMap(hf.expressionArray)([2]), [2, 1, 4]);
-assert.deepEqual(Prelude.concatMap(hf.expressionListArray)([[],[]]), [0, 0]);
-assert.deepEqual(Prelude.concatMap(hf.expressionListArray)([[3, 2],[3, 4, 5]]), [2, 3]);
-assert.deepEqual(Prelude.concatMap(hf.expressionArray)([3, 5, 7, 8]), [3, 1.5, 6, 5, 2.5, 10, 7, 3.5, 14, 8, 4, 16]);
+assert.deepEqual(Prelude.concatMap(Operators.expressionArray)([]), []);
+assert.deepEqual(Prelude.concatMap(Operators.expressionArray)([2]), [2, 1, 4]);
+assert.deepEqual(Prelude.concatMap(Operators.expressionListArray)([[],[]]), [0, 0]);
+assert.deepEqual(Prelude.concatMap(Operators.expressionListArray)([[3, 2],[3, 4, 5]]), [2, 3]);
+assert.deepEqual(Prelude.concatMap(Operators.expressionArray)([3, 5, 7, 8]), [3, 1.5, 6, 5, 2.5, 10, 7, 3.5, 14, 8, 4, 16]);
 
 // maximum
 assert.throws(function(){Prelude.maximum([])});				// Empty list
@@ -337,28 +337,28 @@ assert.deepEqual(Prelude.minimum([10,15,16,13]),10);
  */
 
 // scanl
-assert.deepEqual(Prelude.scanl(hf.op_sum)(1)([]), [1]);
-assert.deepEqual(Prelude.scanl(hf.op_sum)(1)([1]), [1, 2]);
-assert.deepEqual(Prelude.scanl(hf.op_sum)(1)([2,3,4]), [1,3,6,10]);
-assert.deepEqual(Prelude.scanl(hf.op_and)(true)([true,true,false]), [true,true,true,false]);
+assert.deepEqual(Prelude.scanl(Operators.add)(1)([]), [1]);
+assert.deepEqual(Prelude.scanl(Operators.add)(1)([1]), [1, 2]);
+assert.deepEqual(Prelude.scanl(Operators.add)(1)([2,3,4]), [1,3,6,10]);
+assert.deepEqual(Prelude.scanl(Operators.and)(true)([true,true,false]), [true,true,true,false]);
 
 // scanl1
-assert.throws(function(){Prelude.scanl1(hf.op_sum)([])});				// Empty list
-assert.deepEqual(Prelude.scanl1(hf.op_sum)([1]), [1]);
-assert.deepEqual(Prelude.scanl1(hf.op_sum)([1, 2]), [1, 3]);
-assert.deepEqual(Prelude.scanl1(hf.op_sum)([1,2,3,4]), [1,3,6,10]);
+assert.throws(function(){Prelude.scanl1(Operators.add)([])});				// Empty list
+assert.deepEqual(Prelude.scanl1(Operators.add)([1]), [1]);
+assert.deepEqual(Prelude.scanl1(Operators.add)([1, 2]), [1, 3]);
+assert.deepEqual(Prelude.scanl1(Operators.add)([1,2,3,4]), [1,3,6,10]);
 
 // scanr
-assert.deepEqual(Prelude.scanr(hf.op_sum)(1)([]), [1]);
-assert.deepEqual(Prelude.scanr(hf.op_sum)(1)([1]), [2, 1]);
-assert.deepEqual(Prelude.scanr(hf.divide)(2)([8,12,24,4]), [8,1,12,2,2]);
-assert.deepEqual(Prelude.scanr(hf.op_and)(true)([false,true,true]), [false,true,true,true]);
+assert.deepEqual(Prelude.scanr(Operators.add)(1)([]), [1]);
+assert.deepEqual(Prelude.scanr(Operators.add)(1)([1]), [2, 1]);
+assert.deepEqual(Prelude.scanr(Operators.divide)(2)([8,12,24,4]), [8,1,12,2,2]);
+assert.deepEqual(Prelude.scanr(Operators.and)(true)([false,true,true]), [false,true,true,true]);
 
 // scanr1
-assert.throws(function(){Prelude.scanr1(hf.op_sum)([])});				// Empty list
-assert.deepEqual(Prelude.scanr1(hf.op_sum)([1]), [1]);
-assert.deepEqual(Prelude.scanr1(hf.op_sum)([1, 2]), [3, 2]);
-assert.deepEqual(Prelude.scanr1(hf.divide)([8,12,24,4,2]), [8,1,12,2,2]);
+assert.throws(function(){Prelude.scanr1(Operators.add)([])});				// Empty list
+assert.deepEqual(Prelude.scanr1(Operators.add)([1]), [1]);
+assert.deepEqual(Prelude.scanr1(Operators.add)([1, 2]), [3, 2]);
+assert.deepEqual(Prelude.scanr1(Operators.divide)([8,12,24,4,2]), [8,1,12,2,2]);
 
 /*
  * Sublists: take, drop, splitAt, takeWhile, dropWhile, span, break
@@ -393,40 +393,40 @@ assert.deepEqual(Prelude.splitAt(5)([1,2,3,4,5]),[[1,2,3,4,5],[]]);
 assert.deepEqual(Prelude.splitAt(5)("Hello world!"),["Hello", " world!"]);
 
 // takeWhile
-assert.deepEqual(Prelude.takeWhile(hf.lt(3))([]),[]);
-assert.deepEqual(Prelude.takeWhile(hf.lt(3))([1]),[1]);
-assert.deepEqual(Prelude.takeWhile(hf.lt(3))([1,3]),[1]);
-assert.deepEqual(Prelude.takeWhile(hf.lt(3))([1,2,3,4,5,6]),[1,2]);
-assert.deepEqual(Prelude.takeWhile(hf.lt(3))([1,2,1,3,2,1]),[1,2,1]);
-assert.deepEqual(Prelude.takeWhile(hf.lt(3))([3,1,2,3,4,5,6]),[]);
+assert.deepEqual(Prelude.takeWhile(Operators.lt(3))([]),[]);
+assert.deepEqual(Prelude.takeWhile(Operators.lt(3))([1]),[1]);
+assert.deepEqual(Prelude.takeWhile(Operators.lt(3))([1,3]),[1]);
+assert.deepEqual(Prelude.takeWhile(Operators.lt(3))([1,2,3,4,5,6]),[1,2]);
+assert.deepEqual(Prelude.takeWhile(Operators.lt(3))([1,2,1,3,2,1]),[1,2,1]);
+assert.deepEqual(Prelude.takeWhile(Operators.lt(3))([3,1,2,3,4,5,6]),[]);
 
 // dropWhile
-assert.deepEqual(Prelude.dropWhile(hf.lt(3))([]),[]);
-assert.deepEqual(Prelude.dropWhile(hf.lt(3))([1]),[]);
-assert.deepEqual(Prelude.dropWhile(hf.lt(3))([1,3]),[3]);
-assert.deepEqual(Prelude.dropWhile(hf.lt(3))([1,2,1,3,2,1]),[3,2,1]);
-assert.deepEqual(Prelude.dropWhile(hf.lt(3))([4,1,2,3,4,5,6]),[4,1,2,3,4,5,6]);
-assert.deepEqual(Prelude.dropWhile(hf.lt(3))([1,2,3,4,5,6]),[3,4,5,6]);
+assert.deepEqual(Prelude.dropWhile(Operators.lt(3))([]),[]);
+assert.deepEqual(Prelude.dropWhile(Operators.lt(3))([1]),[]);
+assert.deepEqual(Prelude.dropWhile(Operators.lt(3))([1,3]),[3]);
+assert.deepEqual(Prelude.dropWhile(Operators.lt(3))([1,2,1,3,2,1]),[3,2,1]);
+assert.deepEqual(Prelude.dropWhile(Operators.lt(3))([4,1,2,3,4,5,6]),[4,1,2,3,4,5,6]);
+assert.deepEqual(Prelude.dropWhile(Operators.lt(3))([1,2,3,4,5,6]),[3,4,5,6]);
 
 // span
-assert.deepEqual(Prelude.span(hf.lt(3))([]),[[],[]]);
-assert.deepEqual(Prelude.span(hf.lt(3))([1]),[[1],[]]);
-assert.deepEqual(Prelude.span(hf.lt(3))([5]),[[],[5]]);
-assert.deepEqual(Prelude.span(hf.lt(3))([2,5]),[[2],[5]]);
-assert.deepEqual(Prelude.span(hf.lt(3))([5,1,2]),[[],[5,1,2]]);
-assert.deepEqual(Prelude.span(hf.lt(3))([1,2,3,4,5,6]),[[1,2],[3,4,5,6]]);
-assert.deepEqual(Prelude.span(hf.lt(4))([1,2,3,4,5,6]),[[1,2,3],[4,5,6]]);
+assert.deepEqual(Prelude.span(Operators.lt(3))([]),[[],[]]);
+assert.deepEqual(Prelude.span(Operators.lt(3))([1]),[[1],[]]);
+assert.deepEqual(Prelude.span(Operators.lt(3))([5]),[[],[5]]);
+assert.deepEqual(Prelude.span(Operators.lt(3))([2,5]),[[2],[5]]);
+assert.deepEqual(Prelude.span(Operators.lt(3))([5,1,2]),[[],[5,1,2]]);
+assert.deepEqual(Prelude.span(Operators.lt(3))([1,2,3,4,5,6]),[[1,2],[3,4,5,6]]);
+assert.deepEqual(Prelude.span(Operators.lt(4))([1,2,3,4,5,6]),[[1,2,3],[4,5,6]]);
 
 
 // break
-assert.deepEqual(Prelude.break(hf.lt(3))([]),[[],[]]);
-assert.deepEqual(Prelude.break(hf.lt(3))([1]),[[],[1]]);
-assert.deepEqual(Prelude.break(hf.lt(3))([5]),[[5],[]]);
-assert.deepEqual(Prelude.break(hf.lt(3))([2,5]),[[],[2,5]]);
-assert.deepEqual(Prelude.break(hf.lt(3))([5,1,2]),[[5],[1,2]]);
-assert.deepEqual(Prelude.break(hf.lt(3))([1,2,3,4,5,6]),[[],[1,2,3,4,5,6]]);
-assert.deepEqual(Prelude.break(hf.gt(4))([1,2,3,4,5,6]),[[1,2,3,4],[5,6]]);
-assert.deepEqual(Prelude.break(hf.gt(3))([1,2,3,4,1,2,3,4]),[[1,2,3],[4,1,2,3,4]]);
+assert.deepEqual(Prelude.break(Operators.lt(3))([]),[[],[]]);
+assert.deepEqual(Prelude.break(Operators.lt(3))([1]),[[],[1]]);
+assert.deepEqual(Prelude.break(Operators.lt(3))([5]),[[5],[]]);
+assert.deepEqual(Prelude.break(Operators.lt(3))([2,5]),[[],[2,5]]);
+assert.deepEqual(Prelude.break(Operators.lt(3))([5,1,2]),[[5],[1,2]]);
+assert.deepEqual(Prelude.break(Operators.lt(3))([1,2,3,4,5,6]),[[],[1,2,3,4,5,6]]);
+assert.deepEqual(Prelude.break(Operators.gt(4))([1,2,3,4,5,6]),[[1,2,3,4],[5,6]]);
+assert.deepEqual(Prelude.break(Operators.gt(3))([1,2,3,4,1,2,3,4]),[[1,2,3],[4,1,2,3,4]]);
 
 /*
  * Searching lists
@@ -482,21 +482,21 @@ assert.deepEqual(Prelude.zip3([1,2])([1,3])([1,4]),[[1,1,1],[2,3,4]]);
 assert.deepEqual(Prelude.zip3([1,2,3])([4,5,6])([7,8,9]),[[1,4,7],[2,5,8],[3,6,9]]);
 
 // zipWith
-assert.deepEqual(Prelude.zipWith(hf.op_sum)([])([]),[]);
-assert.deepEqual(Prelude.zipWith(hf.op_sum)([])([1]),[]);
-assert.deepEqual(Prelude.zipWith(hf.op_sum)([1])([1]),[2]);
-assert.deepEqual(Prelude.zipWith(hf.op_sum)([1])([1,2]),[2]);
-assert.deepEqual(Prelude.zipWith(hf.op_sum)([1,3])([1,2]),[2,5]);
-assert.deepEqual(Prelude.zipWith(hf.op_and)([true])([true]),[true]);
-assert.deepEqual(Prelude.zipWith(hf.op_sum)([1,2,3])([4,5,6]),[5,7,9]);
+assert.deepEqual(Prelude.zipWith(Operators.add)([])([]),[]);
+assert.deepEqual(Prelude.zipWith(Operators.add)([])([1]),[]);
+assert.deepEqual(Prelude.zipWith(Operators.add)([1])([1]),[2]);
+assert.deepEqual(Prelude.zipWith(Operators.add)([1])([1,2]),[2]);
+assert.deepEqual(Prelude.zipWith(Operators.add)([1,3])([1,2]),[2,5]);
+assert.deepEqual(Prelude.zipWith(Operators.and)([true])([true]),[true]);
+assert.deepEqual(Prelude.zipWith(Operators.add)([1,2,3])([4,5,6]),[5,7,9]);
 
 // zipWith3
-assert.deepEqual(Prelude.zipWith3(hf.sum3)([])([])([]),[]);
-assert.deepEqual(Prelude.zipWith3(hf.sum3)([])([1])([]),[]);
-assert.deepEqual(Prelude.zipWith3(hf.sum3)([1])([1])([1]),[3]);
-assert.deepEqual(Prelude.zipWith3(hf.sum3)([1])([1,2])([2,5]),[4]);
-assert.deepEqual(Prelude.zipWith3(hf.sum3)([1,3])([1,2])([3,6]),[5,11]);
-assert.deepEqual(Prelude.zipWith3(hf.sum3)([1,2,3])([4,5,6])([7,8,9]),[12,15,18]);
+assert.deepEqual(Prelude.zipWith3(Operators.sum3)([])([])([]),[]);
+assert.deepEqual(Prelude.zipWith3(Operators.sum3)([])([1])([]),[]);
+assert.deepEqual(Prelude.zipWith3(Operators.sum3)([1])([1])([1]),[3]);
+assert.deepEqual(Prelude.zipWith3(Operators.sum3)([1])([1,2])([2,5]),[4]);
+assert.deepEqual(Prelude.zipWith3(Operators.sum3)([1,3])([1,2])([3,6]),[5,11]);
+assert.deepEqual(Prelude.zipWith3(Operators.sum3)([1,2,3])([4,5,6])([7,8,9]),[12,15,18]);
 
 // unzip
 assert.deepEqual(Prelude.unzip([]), [[],[]]);

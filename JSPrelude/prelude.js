@@ -5,7 +5,7 @@
  */
 var InfiniteLists = require("./infinite.js");
 
-var $ops = require("./helper_functions.js");
+var $ops = require("./operators.js");
 
 var ListNotFiniteException = function(){};
 
